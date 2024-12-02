@@ -1,4 +1,5 @@
 import sys
+import re  # Importer re pour les expressions régulières
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from interface_connexion import Ui_Form  # Importer l'IHM
 
@@ -24,9 +25,25 @@ class ConnexionApp(QMainWindow, Ui_Form):
             return
 
 
+        # Analyser la robustesse du mot de passe
+        resultat_analyse = self.analyser_mot_de_passe(mot_de_passe)
+        if resultat_analyse != "Le mot de passe est robuste.":
+            self.afficher_message(resultat_analyse)
+            return
+
+
         # Si toutes les vérifications passent
         self.afficher_message("Connexion réussie.")
 
+
+    def analyser_mot_de_passe(self, mot_de_passe):
+        # Vérifier la longueur du mot de passe
+        if len(mot_de_passe) < 8:
+             self.afficher_message("Erreur : Mot de passe trop court")
+             return "Erreur : Mot de passe trop court"
+        else :
+             self.afficher_message("Le mot de passe est robuste.")
+             return "Le mot de passe est robuste."
 
     # Fonction pour afficher un message dans le QLabel
     def afficher_message(self, message):
